@@ -75,43 +75,32 @@ await updb()
 console.log('Queen-Nethu-MD connected ✅')
 
    let up = `.join *QUEEN NETHU MD BOT Connected Successfully!* ✅`;
-    conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://i.ibb.co/D7fhPb1/6071.jpg` }, caption: up })   
+    conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://i.ibb.co/Tqnr4Y8v/93bda2f6cb899b84.jpg` }, caption: up })   
     }
     })
 
   conn.ev.on('creds.update', saveCreds)
-  conn.ev.on('messages.upsert', async (mek) => {
-    try {
-mek = mek.messages[0]
-if (!mek.message) return
-mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-if (mek.key && mek.key.remoteJid === 'status@broadcast') return
+  
+//------- *STATUS AUTO REACT* ----------
 
-if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_STATUS_READ === "true") {
-            try {
-                await conn.readMessages([mek.key]);
-                const mnyako = await jidNormalizedUser(conn.user.id);
-                if (!mek.key.id) {
-                    console.error("Invalid message key: missing 'id'");
-                    return;
-                }
-        
-                await conn.sendMessage(
-                    mek.key.remoteJid,
-                    {
-                        react: {
-                            key: { remoteJid: mek.key.remoteJid, id: mek.key.id },
-                            text: config.AUTO_SREACT_KEY || '💚', 
-                        }
-                    },
-                    {
-                        statusJidList: [mek.key.participant || mek.key.remoteJid, mnyako] 
-                    }
-                );
-            } catch (error) {
-                console.error("Error in auto status react:", error);
-            }
-        }
+conn.ev.on('messages.upsert', async(mek) => {
+mek = mek.messages[0]
+if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true"){
+      await conn.readMessages([mek.key])
+    }
+  if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true"){
+    const emojis = ['🥇', '😹', '💜', '😂', '🎊', '🌝', '😒', '🍂', '🌟', '🎋', '😏', '🎀', '🌸', '👀', '🤖', '🚩', '🥰', '🗿', '💜', '💙', '🌝', '🖤', '💚'];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    await conn.sendMessage(mek.key.remoteJid, {
+      react: {
+        text: randomEmoji,
+        key: mek.key,
+      } 
+    }, { statusJidList: [mek.key.participant] });
+  }
+
+
+//----```© Pink Venom ofc```-----------🗿🤌
       
 const m = sms(conn, mek)
 const type = getContentType(mek.message)
