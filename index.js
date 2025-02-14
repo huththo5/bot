@@ -75,7 +75,7 @@ await updb()
 console.log('Queen-Nethu-MD connected ✅')
 
    let up = `.join *QUEEN NETHU MD BOT Connected Successfully!* ✅`;
-    conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://i.ibb.co/Tqnr4Y8v/93bda2f6cb899b84.jpg` }, caption: up })   
+    conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://i.ibb.co/D7fhPb1/6071.jpg` }, caption: up })   
     }
     })
 
