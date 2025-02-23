@@ -26,33 +26,44 @@ var { updateCMDStore,isbtnID,getCMDStore,getCmdForCmdId,connectdb,input,get,updb
 
 //===================SESSION============================
 if (!fs.existsSync(__dirname + '/auth_info_baileys/creds.json')) {
-  if (config.SESSION_ID) {
-  const sessdata = config.SESSION_ID.replace("ZEROTWO=","")
-  const filer = File.fromURL(`https://mega.nz/file/${sessdata}`)
-  filer.download((err, data) => {
-    if (err) throw err
-    fs.writeFile(__dirname + '/auth_info_baileys/creds.json', data, () => {
-console.log("Session download completed !!")
-    })
-  })
-}}
+    if (config.SESSION_ID) {
+      const sessdata = config.SESSION_ID.replace("VAJIRA-MD=", "")
+      const filer = File.fromURL(`https://mega.nz/file/${sessdata}`)
+      filer.download((err, data) => {
+        if (err) throw err
+        fs.writeFile(__dirname + '/auth_info_baileys/creds.json', data, () => {
+          console.log("Session download completed !!")
+        })
+      })
+    }
+  }
 // <<==========PORTS===========>>
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 8000;
 //====================================
 async function connectToWA() {
-  const { version, isLatest } = await fetchLatestBaileysVersion()
-  console.log(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
-  const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys/')
-  const conn = makeWASocket({
-    logger: P({ level: "fatal" }).child({ level: "fatal" }),
-    printQRInTerminal: true,
-    generateHighQualityLinkPreview: true,
-    auth: state,
-    defaultQueryTimeoutMs: undefined,
-    msgRetryCounterCache 
-  })
+  const {
+        version,
+        isLatest
+    } = await fetchLatestBaileysVersion()
+    console.log(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
+    const {
+        state,
+        saveCreds
+    } = await useMultiFileAuthState(__dirname + '/auth_info_baileys/')
+    const conn = makeWASocket({
+        logger: P({
+            level: "fatal"
+        }).child({
+            level: "fatal"
+        }),
+        printQRInTerminal: true,
+        generateHighQualityLinkPreview: true,
+        auth: state,
+        defaultQueryTimeoutMs: undefined,
+        msgRetryCounterCache
+    })
   
   conn.ev.on('connection.update',async(update) => {
     const { connection, lastDisconnect } = update
